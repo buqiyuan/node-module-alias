@@ -1,7 +1,7 @@
 {
-  "name": "node-module-alias",
-  "description": "Create aliases of directories and register custom module paths",
-  "version": "0.0.1",
+  "name": "@bqy/node-module-alias",
+  "description": "Create aliases of directories and register custom node module paths",
+  "version": "1.0.0",
   "author": {
     "name": "buqiyuan",
     "email": "1743369777@qq.com"
@@ -13,9 +13,9 @@
     "lint": "standard"
   },
   "bugs": {
-    "url": "https://github.com/ilearnio/module-alias/issues"
+    "url": "https://github.com/buqiyuan/node-module-alias/issues"
   },
-  "homepage": "https://github.com/ilearnio/module-alias",
+  "homepage": "https://github.com/buqiyuan/node-module-alias",
   "keywords": [
     "extend",
     "modules",
@@ -33,7 +33,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ilearnio/module-alias.git"
+    "url": "git+https://github.com/buqiyuan/node-module-alias.git"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -165,7 +165,10 @@ function init(options) {
     // above the node_modules directory,
     // Or that package.json is in the node process' current working directory (when
     // running a package manager script, e.g. `yarn start` / `npm run start`)
-    candidatePackagePaths = [nodePath.join(__dirname, "../.."), process.cwd()];
+    candidatePackagePaths = [
+      nodePath.join(__dirname, "../../.."),
+      process.cwd(),
+    ];
   }
 
   var npmPackage;
@@ -192,7 +195,7 @@ function init(options) {
   // Import aliases
   //
 
-  var aliases = npmPackage.moduleAliases || {};
+  var aliases = npmPackage["node-module-alias"] || {};
 
   for (var alias in aliases) {
     if (aliases[alias][0] !== "/") {

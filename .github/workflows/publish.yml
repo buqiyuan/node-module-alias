@@ -1,19 +1,25 @@
-name: Node.js Package
+name: Publish to NPM registry
 
 on:
   push:
     branches: [main]
 
 jobs:
-  publish-npm:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-          scope: "@eoapi"
-      - run: npm publish --access=public
+          node-version: '16'
+          registry-url: https://registry.npmjs.com/
+
+      - name: Gen npmrc
+        run: echo "//registry.npmjs.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ./.npmrc
+      - name: publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          REGISTRY: https://registry.npmjs.com/
+          FORCE_COLOR: 2
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

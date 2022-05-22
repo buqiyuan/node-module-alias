@@ -1,6 +1,11 @@
-# module-alias
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
+# node-module-alias
+  <a href="https://www.npmjs.com/package/@bqy/node-module-alias">
+    <img src="https://img.shields.io/npm/v/@bqy/node-module-alias.svg">
+  </a>
+  <a href="https://npmcharts.com/compare/@bqy/node-module-alias?minimal=true">
+    <img src="https://img.shields.io/npm/dm/@bqy/node-module-alias.svg">
+  </a>
+  <br>
 
 Create aliases of directories and register custom module paths in NodeJS like a boss!
 
@@ -32,7 +37,7 @@ import module from 'my_private_module'
 ## Install
 
 ```
-npm i --save module-alias
+npm i --save @bqy/node-module-alias
 ```
 
 ## Usage
@@ -41,7 +46,7 @@ Add your custom configuration to your `package.json` (in your application's root
 
 ```js
 // Aliases
-"_moduleAliases": {
+"node-module-alias": {
   "@root"      : ".", // Application's root
   "@deep"      : "src/some/very/deep/directory/or/file",
   "@my_module" : "lib/some-file.js",
@@ -55,7 +60,7 @@ Add your custom configuration to your `package.json` (in your application's root
 Then add this line at the very main file of your app, before any code
 
 ```js
-require('module-alias/register')
+require('@bqy/node-module-alias/register')
 ```
 
 **And you're all set!** Now you can do stuff like:
@@ -83,7 +88,7 @@ If you don't want to modify your `package.json` or you just prefer to set it all
 
 _Examples:_
 ```js
-const moduleAlias = require('module-alias')
+const moduleAlias = require('@bqy/node-module-alias')
 
 //
 // Register alias
@@ -119,7 +124,7 @@ moduleAlias.addPath(__dirname + '/src')
 //
 moduleAlias(__dirname + '/package.json')
 
-// Or let module-alias to figure where your package.json is
+// Or let node-module-alias to figure where your package.json is
 // located. By default it will look in the same directory
 // where you have your node_modules (application's root)
 moduleAlias()
@@ -137,7 +142,7 @@ module.exports = {
   entry: { ... },
   resolve: {
     root: __dirname,
-    alias: npm_package._moduleAliases || {},
+    alias: npm_package['node-module-alias'] || {},
     modules: npm_package._moduleDirectories || [] // eg: ["node_modules", "node_modules_custom", "src"]
   }
 }
@@ -147,7 +152,7 @@ More details on the [official documentation](https://webpack.js.org/configuratio
 
 ## Usage with Jest
 
-Unfortunately, `module-alias` itself would not work from Jest due to a custom behavior of Jest's `require`. But you can use it's own aliasing mechanism instead. The configuration can be defined either in `package.json` or `jest.config.js`. The example below is for `package.json`:
+Unfortunately, `node-module-alias` itself would not work from Jest due to a custom behavior of Jest's `require`. But you can use it's own aliasing mechanism instead. The configuration can be defined either in `package.json` or `jest.config.js`. The example below is for `package.json`:
 
 ```js
 "jest": {
@@ -162,20 +167,20 @@ More details on the [official documentation](https://jestjs.io/docs/en/configura
 
 ## Using within another NPM package
 
-You can use `module-alias` within another NPM package, however there are a few things to take into consideration.
+You can use `node-module-alias` within another NPM package, however there are a few things to take into consideration.
 
-1. As the aliases are global, you should make sure your aliases are unique, to avoid conflicts with end-user code, or with other libraries using module-alias. For example, you could prefix your aliases with '@my-lib/', and then use require('@my-lib/deep').
-2. The internal "register" mechanism may not work, you should not rely on `require('module-alias/register')` for automatic detection of `package.json` location (where you defined your aliases), as it tries to find package.json in either the current working directory of your node process, or two levels down from node_modules/module-alias. It is extremely likely that this is end-user code. So, instead, your should either register aliases manually with `moduleAlias.addAlias`, or using something like `require('module-alias')(__dirname)`.
+1. As the aliases are global, you should make sure your aliases are unique, to avoid conflicts with end-user code, or with other libraries using node-module-alias. For example, you could prefix your aliases with '@my-lib/', and then use require('@my-lib/deep').
+2. The internal "register" mechanism may not work, you should not rely on `require('@bqy/node-module-alias/register')` for automatic detection of `package.json` location (where you defined your aliases), as it tries to find package.json in either the current working directory of your node process, or two levels down from node_modules/@bqy/node-module-alias. It is extremely likely that this is end-user code. So, instead, your should either register aliases manually with `moduleAlias.addAlias`, or using something like `require('@bqy/node-module-alias')(__dirname)`.
 
-Here is an [example project](https://github.com/Kehrlann/module-alias-library).
+Here is an [example project](https://github.com/Kehrlann/node-module-alias-library).
 
 
 ## Known incompatibilities
 
 This module does not play well with:
 
-- Front-end JavaScript code. Module-alias is designed for server side so do not expect it to work with front-end frameworks (React, Vue, ...) as they tend to use Webpack. Use Webpack's [resolve.alias](https://webpack.js.org/configuration/resolve/#resolvealias) mechanism instead.
-- [Jest](https://jestjs.io), which discards node's module system entirely to use it's own module system, bypassing module-alias.
+- Front-end JavaScript code. node-module-alias is designed for server side so do not expect it to work with front-end frameworks (React, Vue, ...) as they tend to use Webpack. Use Webpack's [resolve.alias](https://webpack.js.org/configuration/resolve/#resolvealias) mechanism instead.
+- [Jest](https://jestjs.io), which discards node's module system entirely to use it's own module system, bypassing node-module-alias.
 - The [NCC compiler](https://github.com/zeit/ncc), as it uses WebPack under the hood without exposing properties, such as resolve.alias. It is not [something they wish to do](https://github.com/zeit/ncc/pull/460).
 
 ## How it works?
@@ -184,10 +189,10 @@ In order to register an alias it modifies the internal `Module._resolveFilename`
 
 In order to register a custom modules path (`addPath`) it modifies the internal `Module._nodeModulePaths` method so that the given directory then acts like it's the `node_modules` directory.
 
-[npm-image]: https://img.shields.io/npm/v/module-alias.svg
-[npm-url]: https://npmjs.org/package/module-alias
-[travis-image]: https://img.shields.io/travis/ilearnio/module-alias/master.svg
-[travis-url]: https://travis-ci.org/ilearnio/module-alias
+[npm-image]: https://img.shields.io/npm/v/node-module-alias.svg
+[npm-url]: https://npmjs.org/package/node-module-alias
+[travis-image]: https://img.shields.io/travis/ilearnio/node-module-alias/master.svg
+[travis-url]: https://travis-ci.org/ilearnio/node-module-alias
 
 ## Refactor your code (for already existing projects)
 
